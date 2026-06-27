@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Layer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @font-face {
+      font-family: 'NeueMontreal';
+      src: local('Helvetica Neue'), local('Arial');
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      font-family: 'NeueMontreal', Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .overlay {
+      position: relative;
+      width: 100%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .logo-container {
+      padding-top: 6vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      pointer-events: auto;
+      margin-bottom: 10vh;
+    }
+    .logo-text {
+      color: white;
+      font-size: 2.5rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+    }
+    .logo-text span {
+      opacity: 0.7;
+    }
+    .white-card {
+      background: white;
+      color: black;
+      width: 90%;
+      max-width: 900px;
+      padding: 5rem 4rem;
+      pointer-events: auto;
+      margin-bottom: 10vh;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      align-self: flex-start;
+      margin-left: 0;
+    }
+    .right-card {
+      align-self: flex-end;
+      margin-left: auto;
+      margin-right: 0;
+    }
+    .card-title {
+      font-size: 3.5rem;
+      font-weight: 500;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      letter-spacing: -0.03em;
+    }
+    .card-text {
+      font-size: 1.35rem;
+      line-height: 1.4;
+      margin-bottom: 3rem;
+      color: #111;
+    }
+    .section-heading {
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-top: 5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.5rem;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .feature-item h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .feature-item p {
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.4;
+    }
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    .step-item {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .step-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      min-width: 2rem;
+    }
+    .code-block {
+      background: #f4f4f5;
+      padding: 2rem;
+      font-family: monospace;
+      font-size: 1rem;
+      color: #000;
+      overflow-x: auto;
+      border: 1px solid #e4e4e7;
+    }
+    .btn {
+      display: inline-block;
+      border: 2px solid black;
+      background: black;
+      color: white;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: white;
+      color: black;
+    }
+    
+    @media (max-width: 768px) {
+      .white-card { padding: 3rem 2rem; }
+      .card-title { font-size: 2.5rem; }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="overlay">
+    <div class="logo-container">
+      <svg width="56" height="56" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <mask id="cut-mask">
+            <rect width="100" height="100" fill="white" />
+            <!-- Diagonal cut -->
+            <line x1="5" y1="65" x2="95" y2="35" stroke="black" stroke-width="14" />
+          </mask>
+        </defs>
+        <g fill="none" stroke="white" stroke-width="14" stroke-linejoin="miter" stroke-linecap="butt" mask="url(#cut-mask)">
+          <!-- Shared Stem -->
+          <line x1="35" y1="15" x2="35" y2="85" />
+          <!-- P Loop -->
+          <path d="M 35 15 L 75 15 L 75 50 L 35 50" />
+          <!-- L Base -->
+          <line x1="35" y1="85" x2="75" y2="85" />
+        </g>
+      </svg>
+      <div class="logo-text" style="margin: 0;">Premium <span>Layer</span></div>
+    </div>
+    
+    <div class="white-card">
+      <h1 class="card-title">Build AI Data Pipelines in Plain English.</h1>
+      <p class="card-text">
+        Describe your data workflow in natural language. AgenticAI builds, runs, and deploys it with 16+ prebuilt functions, plug-and-play APIs, and zero boilerplate.
+      </p>
+      
+      <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <a href="#quickstart" class="btn">Start Building Free</a>
+        <a href="#demo" class="btn" style="background:white; color:black;">Watch Demo</a>
+      </div>
+
+      <h2 class="section-heading">Everything You Need</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h3>Natural Language Pipelines</h3>
+          <p>Describe what you want in plain English. The AI builds and runs the entire data workflow automatically. No YAML, no DAGs, just words.</p>
+        </div>
+        <div class="feature-item">
+          <h3>16+ Prebuilt Data Functions</h3>
+          <p>SQL, S3, data cleaning, filtering, aggregation, and charts all ready out of the box. Skip the boilerplate and ship in minutes.</p>
+        </div>
+        <div class="feature-item">
+          <h3>Plug & Play API</h3>
+          <p>One function call. Works natively with CSV files, Amazon S3 buckets, PostgreSQL databases, and more. Zero configuration needed.</p>
+        </div>
+        <div class="feature-item">
+          <h3>Bring Your Own Functions</h3>
+          <p>Drop in a .py file and AgenticAI automatically discovers and uses your custom functions inside any AI-generated pipeline.</p>
+        </div>
+        <div class="feature-item" style="grid-column: 1 / -1;">
+          <h3>Auth, Billing & Deployment Included</h3>
+          <p>API key management, Razorpay payment integration, and cloud deployment support are all built in. Go from prototype to production without touching infra.</p>
+        </div>
+      </div>
+
+      <h2 class="section-heading">How It Works</h2>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">Describe Your Data Workflow</h3>
+            <p style="color:#333; line-height:1.4;">Tell AgenticAI what you need in plain English. For example: "Load sales data from S3, filter rows where revenue &gt; 10000, group by region, return a chart." No schema, no config.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">AI Builds & Executes the Pipeline</h3>
+            <p style="color:#333; line-height:1.4;">AgenticAI selects the right prebuilt functions, chains them together intelligently, and executes the pipeline returning structured results with a single API call.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">Deploy, Scale & Monetize</h3>
+            <p style="color:#333; line-height:1.4;">Ship to the cloud with one command. Auth, API key management, and Razorpay billing are included. Turn your pipeline into a product in hours, not weeks.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-heading">Up and Running in 60 Seconds</h2>
+      <div class="code-block">
+<pre style="margin: 0;"><code># Install: pip install agenticai
+import agenticai
+
+# 1. Authenticate with your API key
+agenticai.configure(api_key="sk-live-xxxxxxxxxxxxxxxx")
+
+# 2. Describe your pipeline in plain English
+result = agenticai.run(
+    task="Load CSV from S3, filter revenue > 10000, group by region, chart",
+    data_source="s3://my-bucket/sales_data.csv",
+    custom_functions="./my_transforms.py",  # optional
+)
+
+# 3. Use the result
+print(result.summary)
+result.chart.save("revenue_by_region.png")</code></pre>
+      </div>
+      
+      <div style="margin-top: 6rem; margin-bottom: 2rem; text-align: center;">
+        <h2 style="font-size: 2.5rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 1rem;">Ready to Ship Your First AI Pipeline?</h2>
+        <p style="color:#333; font-size: 1.1rem; margin-bottom: 2.5rem;">Join 500+ developers building smarter data products with AgenticAI.<br/>Free to start. No credit card required.</p>
+        <a href="https://agentic-ai-nt21.onrender.com" class="btn">Create Free Account</a>
+      </div>
+    </div>
+
+    <div class="white-card right-card">
+      <h2 class="card-title" style="font-size: 2.5rem; margin-bottom: 2rem;">Future Features</h2>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">Cloud Upload Workflows</h3>
+            <p style="color:#333; line-height:1.4;">Making your workflow seamlessly upload and run on the cloud.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">Expanded Integrations</h3>
+            <p style="color:#333; line-height:1.4;">Native support for SQLite3, PostgreSQL, and AWS S3 will be added in the future.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div>
+            <h3 style="font-weight:700; font-size:1.25rem; margin-bottom:0.5rem; letter-spacing: -0.01em;">Cloud Native Functions</h3>
+            <p style="color:#333; line-height:1.4;">To be able to run cloud native functions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div style="background: white; color: black; width: 100%; padding: 4rem 2rem; margin-top: 10vh; text-align: center;">
+      <h3 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem; margin-top: 0;">Contact for issues & support</h3>
+      <a href="mailto:sanidhyaagrawal2002@gmail.com" style="color: #333; font-size: 1.25rem; text-decoration: none; font-weight: 500; border-bottom: 2px solid #333; padding-bottom: 2px; transition: all 0.2s;" onmouseover="this.style.color='black'; this.style.borderColor='black'" onmouseout="this.style.color='#333'; this.style.borderColor='#333'">sanidhyaagrawal2002@gmail.com</a>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    const fontSize = 16;
+    let cols, rows;
+    let grid = [];
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+{}|:"<>?~`-=[]\\;,./'.split('');
+    
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      cols = Math.ceil(width / fontSize);
+      rows = Math.ceil(height / fontSize);
+      
+      grid = [];
+      for (let i = 0; i < cols; i++) {
+        grid[i] = [];
+        for (let j = 0; j < rows; j++) {
+          grid[i][j] = {
+            char: chars[Math.floor(Math.random() * chars.length)],
+            opacity: Math.random() * 0.8 + 0.1,
+            updateRate: Math.random() * 0.05
+          };
+        }
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    let mouseX = -1000;
+    let mouseY = -1000;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    let time = 0;
+    function draw() {
+      time += 0.03;
+      
+      ctx.fillStyle = '#050505';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.font = fontSize + 'px monospace';
+      ctx.textAlign = 'center';
+      
+      const cx1 = width * 0.4 + Math.sin(time) * 150;
+      const cy1 = height * 0.5 + Math.cos(time) * 100;
+      const cx2 = width * 0.7 + Math.sin(time * 0.8) * 200;
+      const cy2 = height * 0.6 + Math.cos(time * 0.9) * 150;
+      const cx3 = width * 0.2 + Math.sin(time * 1.2) * 100;
+      const cy3 = height * 0.8 + Math.cos(time * 1.1) * 100;
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const cell = grid[i][j];
+          
+          if (Math.random() < cell.updateRate) {
+            cell.char = chars[Math.floor(Math.random() * chars.length)];
+          }
+
+          const x = i * fontSize + fontSize/2;
+          const y = j * fontSize + fontSize;
+          
+          const d1 = Math.hypot(x - cx1, y - cy1);
+          const d2 = Math.hypot(x - cx2, y - cy2);
+          const d3 = Math.hypot(x - cx3, y - cy3);
+          
+          let color = '#222'; 
+          if (d1 < 350) color = '#991b1b'; // dark red
+          else if (d2 < 400) color = '#1e40af'; // dark blue
+          else if (d3 < 300) color = '#065f46'; // dark green
+          else if (Math.random() > 0.995) color = '#fff'; 
+
+          const dMouse = Math.hypot(x - mouseX, y - mouseY);
+          let opacity = cell.opacity;
+          if (dMouse < 150) {
+            if (color === '#991b1b') color = '#ef4444';
+            else if (color === '#1e40af') color = '#3b82f6';
+            else if (color === '#065f46') color = '#10b981';
+            else color = '#fff';
+            opacity = Math.max(opacity, 1 - (dMouse / 150) + 0.2);
+          }
+
+          ctx.fillStyle = color;
+          ctx.globalAlpha = Math.min(1, opacity);
+          ctx.fillText(cell.char, x, y);
+        }
+      }
+      ctx.globalAlpha = 1;
+      
+      setTimeout(() => {
+        requestAnimationFrame(draw);
+      }, 60);
+    }
+
+    draw();
+  </script>
+</body>
+</html>
